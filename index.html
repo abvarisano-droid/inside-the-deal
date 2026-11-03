@@ -6,6 +6,7 @@
 <link rel="preload" as="font" type="font/woff2" href="fonts/public-sans-latin.woff2" crossorigin>
 <link rel="preload" as="font" type="font/woff2" href="fonts/big-shoulders-800-latin.woff2" crossorigin>
 <link rel="preload" as="image" href="images/crest.webp">
+<noscript><style>#v-jake{display:block!important}#v-home .choice,.back{display:none!important}</style></noscript>
 <style>
 @font-face{font-family:"Public Sans";font-style:normal;font-weight:400 700;font-display:optional;src:url(fonts/public-sans-latin.woff2) format("woff2")}
 @font-face{font-family:"Big Shoulders Display";font-style:normal;font-weight:800;font-display:optional;src:url(fonts/big-shoulders-800-latin.woff2) format("woff2")}
@@ -46,6 +47,7 @@ h2{font-size:30px;margin-bottom:10px}
 .back:hover{color:var(--ink)}
 :focus-visible{outline:3px solid var(--gold);outline-offset:2px}
 .small{font-size:13px;color:var(--muted)}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
 
 /* Jake */
 .profile{display:flex;gap:16px;align-items:center;margin-bottom:18px}
@@ -95,13 +97,14 @@ section.block{margin-bottom:28px}
 @media (prefers-reduced-motion:no-preference){.choice,.btn{transition:border-color .15s}}
 </style></head><body>
 
+<p id="live" class="sr-only" aria-live="polite"></p>
 <div class="wm" aria-hidden="true"></div>
 <header class="band">
   <div class="wrap hero">
     <img class="crest" src="images/crest.webp" width="92" height="105" alt="Alpha Kappa Psi, University of Tampa, Phi Upsilon Chapter">
     <div class="herotext">
     <div class="eyebrow">Alpha Kappa Psi · Phi Upsilon · University of Tampa</div>
-    <h1>Inside the <em>deal</em> with Jake Zwiebel</h1>
+    <h1 id="site-title" tabindex="-1">Inside the <em>deal</em> with Jake Zwiebel</h1>
     <div class="meta"><span>Mon, Oct 26</span><span>7:30 PM</span><span>Reeves Theater, Vaughn Center</span></div>
     </div>
   </div>
@@ -125,7 +128,7 @@ section.block{margin-bottom:28px}
       <img class="mono" src="images/jake.webp" width="104" height="104" loading="lazy" alt="Jake Zwiebel">
       <div>
         <div class="eyebrow">Speaker</div>
-        <h2>Jake Zwiebel</h2>
+        <h2 id="jake-title" tabindex="-1">Jake Zwiebel</h2>
         <div class="role">Vice President, Investment Banking · Raymond James</div>
       </div>
     </div>
@@ -183,12 +186,16 @@ section.block{margin-bottom:28px}
 </main>
 
 <script>
-function show(){
+function show(switched){
   const jake = location.hash === "#jake";
   document.getElementById("v-home").hidden = jake;
   document.getElementById("v-jake").hidden = !jake;
   window.scrollTo(0,0);
+  if (!switched) return;
+  const heading = document.getElementById(jake ? "jake-title" : "site-title");
+  heading.focus({preventScroll:true});
+  document.getElementById("live").textContent = jake ? "Meet Jake: his path and where to apply." : "Home: Inside the deal with Jake Zwiebel.";
 }
-window.addEventListener("hashchange",show); show();
+window.addEventListener("hashchange",function(){ show(true); }); show(false);
 </script>
 </body></html>
